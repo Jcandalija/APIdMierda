@@ -17,8 +17,23 @@ $(document).ready(function() {
 
         });
 
-    });
+            var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+                $.getJSON(flickerAPI, {
+                    tags: $(".ciudad").val(),
+                    tagmode: "any",
+                    format: "json"
+                }).done(function(result, status, xhr) {
+                    $('.imagenes').text('');
+                    $.each(result.items, function(i, item) {
+                        $("<img>").attr("src", item.media.m).appendTo(".imagenes");
+                        if (i === 999) {
+                            return false;
+                        }
+                    });
+                }).fail(function(xhr, status, error) {
+                    alert("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+                });
 
-    
-        
-});
+        });
+
+    });
